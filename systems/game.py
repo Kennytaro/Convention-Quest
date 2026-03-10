@@ -6,7 +6,8 @@ from systems.world import draw_world, draw_pause
 from systems.hud import draw_hud
 
 class Game:
-
+    fps = 60
+    
     def __init__(self):
 
         self.player = Player(WIDTH//2,HEIGHT//2)
@@ -84,4 +85,5 @@ class Game:
             t = FONT.render("You Win! Press SPACE to Play Again, or Q to Quit", True, WHITE)
             r = t.get_rect(center=(WIDTH//2, HEIGHT//2))
             screen.blit(t, r)
+
    
