@@ -5,13 +5,15 @@ from systems.game import Game
 from settings import clock
 
 game = Game()
+clock = pygame.time.Clock()
 pygame.display.set_caption("Convention Quest")
 
 running = True
 
 while running:
 
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(game.fps) / 1000.0
+    dt = min(dt, 0.05)
 
     for event in pygame.event.get():
 
@@ -36,4 +38,5 @@ while running:
     pygame.display.flip() 
 
 pygame.quit()
+
 sys.exit()
