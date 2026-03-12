@@ -3,14 +3,14 @@ import random
 
 from settings import MERCH_COLOR, MERCH_COUNT, WIDTH, HUD_HEIGHT, HEIGHT
 from entities.booths import get_booth_rects
-class Merch:
+class Merch: #Creates Merch
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 20, 20)
 
     def draw(self, screen):
         pygame.draw.circle(screen, MERCH_COLOR, self.rect.center, 10)
 
-def spawn_merchs(player_rect):
+def spawn_merchs(player_rect): #spawn Merch
     booth_rects = get_booth_rects()
     
     merchs = []
