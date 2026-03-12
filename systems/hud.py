@@ -1,10 +1,10 @@
 import pygame
 
-from settings import WHITE, FONT, WIDTH, HUD_HEIGHT
+from settings import WHITE, FONT, WIDTH, HUD_HEIGHT, RED, GRAY, HUD
 
 def draw_hud(screen, player):
       # HUD
-    pygame.draw.rect(screen, (30, 30, 40),(0, 0, WIDTH, HUD_HEIGHT))
+    pygame.draw.rect(screen, HUD,(0, 0, WIDTH, HUD_HEIGHT))
         
     draw_health_bar(screen, 20, 200, 30, player.hp, player.max_hp)
 
@@ -19,11 +19,11 @@ def draw_health_bar(screen, x, width, height, hp, max_hp):
 
 
     # background (empty health)
-    pygame.draw.rect(screen, (80, 80, 80), (x, y, width, height))
+    pygame.draw.rect(screen, GRAY, (x, y, width, height))
 
     # health amount
     health_width = int((hp / max_hp) * width)
-    pygame.draw.rect(screen, (200, 50, 50), (x, y, health_width, height))
+    pygame.draw.rect(screen, RED, (x, y, health_width, height))
 
     # outline
     pygame.draw.rect(screen, WHITE, (x, y, width, height), 2)
