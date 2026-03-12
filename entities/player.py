@@ -4,7 +4,7 @@ from settings import USER_COLOR, HUD_HEIGHT, WIDTH, HEIGHT, MOVE_KEYS
 from entities.booths import get_booth_rects
 
 class Player:
-    def __init__(self, x, y):
+    def __init__(self, x, y): #move to global variable
         self.speed = 200
         self.size = 40
         self.hp = 100
