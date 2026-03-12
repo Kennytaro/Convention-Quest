@@ -3,14 +3,15 @@ import random
 
 from settings import HAZARD_COLOR, WIDTH, HUD_HEIGHT, HEIGHT, HAZARD_COUNT
 from entities.booths import get_booth_rects
-class Hazard:
+
+class Hazard:#creates hazard
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 30, 30)
         
     def draw(self, screen):
         pygame.draw.rect(screen, HAZARD_COLOR, self.rect)
     
-def spawn_hazards(merchs, player_rect):
+def spawn_hazards(merchs, player_rect): #sapwn hazards
     # Build booth rects to match exactly what draw_world() renders
         booth_rects = get_booth_rects()
         
@@ -22,7 +23,7 @@ def spawn_hazards(merchs, player_rect):
                 y = random.randint(HUD_HEIGHT + 100, HEIGHT - 100)
                 new_hazard = Hazard(x, y)
 
-                #   Check collision with booths AND merchs
+                #   Check collision with booths AND merchs AND player AND hazards
                 booth_collision = any(new_hazard.rect.colliderect(r) for r in booth_rects)
                 merch_collision = any(new_hazard.rect.colliderect(m.rect) for m in merchs)
                 player_collision = new_hazard.rect.colliderect(player_rect)
