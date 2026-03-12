@@ -2,6 +2,8 @@ import pygame
 
 pygame.init()
 
+#Eventaully make as debug screen
+
 WIDTH = 960
 HEIGHT = 540
 HUD_HEIGHT = 50
@@ -14,7 +16,8 @@ clock = pygame.time.Clock()
 
 WHITE = (255,255,255)
 BLACK = (0,0,0)
-GRAY = (60,60,60)
+GRAY = (80,80,80)
+#used for booths
 LIGHT_GRAY = (150,150,150)
 RED = (200,40,40)
 GREEN = (40,200,40)
@@ -24,6 +27,10 @@ USER_COLOR = (40,40,200)
 MERCH_COLOR = (240, 200, 100)
 #Red
 HAZARD_COLOR = (200, 80, 80)
+#Dark Gray
+HUD = (30, 30, 40)
+#Tint, darker black tint kinda
+OVERLAY = (0, 0, 0, 140)
 
 FONT = pygame.font.SysFont(None, 24)
 
