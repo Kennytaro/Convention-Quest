@@ -7,7 +7,7 @@ from systems.hud import draw_hud
 
 class Game:
     fps = 60
-    
+
     def __init__(self):
 
         self.player = Player(WIDTH//2,HEIGHT//2)
@@ -42,11 +42,11 @@ class Game:
                 if self.player.score >= 10:
                     self.state = "win"
 
-        # hazard damage
+        #Hazard damage + i-frame
         for hz in self.hazards:
             if self.player.rect.colliderect(hz.rect) and not self.player.is_invincible:
                 self.player.hp -= 10
-                self.player.invincible_for = 0.5
+                self.player.invincible_for = 1.0
 
                 if self.player.hp <= 0:
                     self.state = "gameover"
@@ -85,5 +85,4 @@ class Game:
             t = FONT.render("You Win! Press SPACE to Play Again, or Q to Quit", True, WHITE)
             r = t.get_rect(center=(WIDTH//2, HEIGHT//2))
             screen.blit(t, r)
-
    
