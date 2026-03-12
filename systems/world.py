@@ -1,18 +1,19 @@
 import pygame
 
-from settings import GRAY, LIGHT_GRAY, HUD_HEIGHT, WIDTH, HEIGHT, WHITE, FONT
+from settings import GRAY, LIGHT_GRAY, HUD_HEIGHT, WIDTH, HEIGHT, WHITE, FONT, OVERLAY
 from entities.booths import get_booth_rects
 
 def draw_world(screen):
     pygame.draw.rect(screen, GRAY, (0, HUD_HEIGHT, WIDTH, HEIGHT - HUD_HEIGHT))
     
-    #Booths
+    #Booths - pulls from booths in entities
     for rect in get_booth_rects():
         pygame.draw.rect(screen, LIGHT_GRAY, rect)
 
+#creates pause screen
 def draw_pause(screen):
     overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
-    overlay.fill((0, 0, 0, 140))
+    overlay.fill(OVERLAY)
     screen.blit(overlay, (0, 0))
 
     t = FONT.render("PAUSED", True, WHITE)
