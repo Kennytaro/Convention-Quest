@@ -3,11 +3,11 @@ import pygame
 from settings import GRAY, LIGHT_GRAY, HUD_HEIGHT, WIDTH, HEIGHT, WHITE, FONT, OVERLAY
 from entities.booths import get_booth_rects
 
-def draw_world(screen):
+def draw_world(screen, level):
     pygame.draw.rect(screen, GRAY, (0, HUD_HEIGHT, WIDTH, HEIGHT - HUD_HEIGHT))
     
     #Booths - pulls from booths in entities
-    for rect in get_booth_rects():
+    for rect in get_booth_rects(level):
         pygame.draw.rect(screen, LIGHT_GRAY, rect)
 
 #creates pause screen
