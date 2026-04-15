@@ -31,6 +31,7 @@ HAZARD_COLOR = (200, 80, 80)
 HUD = (30, 30, 40)
 #Tint, darker black tint kinda
 OVERLAY = (0, 0, 0, 140)
+PLAYER_SPEED = 300
 
 FONT = pygame.font.SysFont(None, 24)
 
