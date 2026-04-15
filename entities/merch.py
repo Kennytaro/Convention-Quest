@@ -10,11 +10,11 @@ class Merch: #Creates Merch
     def draw(self, screen):
         pygame.draw.circle(screen, MERCH_COLOR, self.rect.center, 10)
 
-def spawn_merchs(player_rect): #spawn Merch
-    booth_rects = get_booth_rects()
+def spawn_merchs(player_rect, count, level): #spawn Merch
+    booth_rects = get_booth_rects(level)
     
     merchs = []
-    for _ in range(MERCH_COUNT):
+    for _ in range(count):
         attempts = 0
         while True:
             x = random.randint(50, WIDTH - 50)
