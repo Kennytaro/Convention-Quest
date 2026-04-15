@@ -13,4 +13,8 @@ From this folder:
 - `Q`: quit
 
 ## Versions
-- pygame 2.6.1 (SDL 2.28.4, Python 3.12.3) 
+- pygame 2.6.1 (SDL 2.28.4, Python 3.12.3)
+
+## OS
+- Windows
+- Mac
