@@ -1,11 +1,11 @@
 import pygame
 
-from settings import USER_COLOR, HUD_HEIGHT, WIDTH, HEIGHT, MOVE_KEYS
+from settings import USER_COLOR, HUD_HEIGHT, WIDTH, HEIGHT, MOVE_KEYS, PLAYER_SPEED
 from entities.booths import get_booth_rects
 
 class Player:
     def __init__(self, x, y): #move to global variable
-        self.speed = 200
+        self.speed = PLAYER_SPEED
         self.size = 40
         self.hp = 100
         self.max_hp = 100
@@ -17,7 +17,7 @@ class Player:
     def is_invincible(self):
         return self.invincible_for > 0
 
-    def update(self, dt):
+    def update(self, dt, booths):
         if self.invincible_for > 0:
             self.invincible_for = max(0.0, self.invincible_for - dt)
 
@@ -38,8 +38,6 @@ class Player:
             length = (dx**2 + dy**2)**0.5
             dx /= length
             dy /= length
-
-        booths = get_booth_rects()
 
         if dx != 0:
             self.rect.x += dx * self.speed * dt
@@ -64,8 +62,6 @@ class Player:
         self.rect.top = max(HUD_HEIGHT, self.rect.top)
         self.rect.bottom = min(HEIGHT, self.rect.bottom)
 
-        self.rect.x += dx * self.speed * dt
-        self.rect.y += dy * self.speed * dt
-
+       
     def draw(self, screen):
         pygame.draw.rect(screen, USER_COLOR, self.rect)    
