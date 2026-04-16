@@ -1,10 +1,10 @@
 import pygame
 
-from settings import USER_COLOR, HUD_HEIGHT, WIDTH, HEIGHT, MOVE_KEYS, PLAYER_SPEED
+from settings import USER_COLOR, HUD_HEIGHT, WIDTH, HEIGHT, MOVE_KEYS, PLAYER_SPEED, RED
 from entities.booths import get_booth_rects
 
 class Player:
-    def __init__(self, x, y): #move to global variable
+    def __init__(self, x, y):  # move to global variable
         self.speed = PLAYER_SPEED
         self.size = 40
         self.hp = 100
@@ -62,6 +62,12 @@ class Player:
         self.rect.top = max(HUD_HEIGHT, self.rect.top)
         self.rect.bottom = min(HEIGHT, self.rect.bottom)
 
-       
     def draw(self, screen):
-        pygame.draw.rect(screen, USER_COLOR, self.rect)    
+        color = USER_COLOR
+
+        if self.is_invincible:
+            blink_on = (pygame.time.get_ticks() // 100) % 2 == 0
+            if blink_on:
+                color = RED
+
+        pygame.draw.rect(screen, color, self.rect)
