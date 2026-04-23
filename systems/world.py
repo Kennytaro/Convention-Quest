@@ -4,7 +4,7 @@ from settings import GRAY, LIGHT_GRAY, HUD_HEIGHT, WIDTH, HEIGHT, WHITE, FONT, O
 from entities.booths import get_booth_rects
 
 def draw_world(screen, level):
-    pygame.draw.rect(screen, GRAY, (0, HUD_HEIGHT, WIDTH, HEIGHT - HUD_HEIGHT))
+    #pygame.draw.rect(screen, GRAY, (0, HUD_HEIGHT, WIDTH, HEIGHT - HUD_HEIGHT))
     
     #Booths - pulls from booths in entities
     for rect in get_booth_rects(level):
