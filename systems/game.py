@@ -11,6 +11,8 @@ from systems.levels import get_level
 from entities.booths import get_booth_rects
 from systems.audio import AudioBank
 
+bg_img = pygame.image.load("assets/bgfloor.png").convert()
+bg_img = pygame.transform.scale(bg_img, (WIDTH, HEIGHT))
 
 class SparkleParticle:
     def __init__(self, x, y):
@@ -40,6 +42,19 @@ class SparkleParticle:
         ]
         pygame.draw.polygon(screen, WHITE, points)
 
+def draw_text_with_outline(screen, text, font, color, outline_color, center):
+    base = font.render(text, True, color)
+    outline = font.render(text, True, outline_color)
+
+    r = base.get_rect(center=center)
+
+    # 8-direction outline (better than 4)
+    for dx in [-2, 0, 2]:
+        for dy in [-2, 0, 2]:
+            if dx != 0 or dy != 0:
+                screen.blit(outline, (r.x + dx, r.y + dy))
+
+    screen.blit(base, r)
 
 class Game:
     fps = 60
@@ -55,9 +70,12 @@ class Game:
         self.level_data = get_level(self.level)
 
         self.audio = AudioBank()
+        self.music_started = False
+        self.audio_enabled = True
 
         self.state = "title"
-
+        self.show_particles = True
+        self.show_flashing = True
         self.spawn_level()
 
     def spawn_level(self):
@@ -89,7 +107,7 @@ class Game:
             self.sparkles.append(SparkleParticle(x, y))
 
     def update(self, dt):
-        if self.state not in ("play",):
+        if self.state != "play":
             return
 
         self.player.update(dt, self.booths)
@@ -97,10 +115,12 @@ class Game:
         for hz in self.hazards:
             hz.update(dt, self.hazards, self.booths)
 
-        for sparkle in self.sparkles[:]:
-            sparkle.update(dt)
-            if sparkle.life <= 0:
-                self.sparkles.remove(sparkle)
+        if self.show_particles:
+            for sparkle in self.sparkles[:]:
+                sparkle.update(dt)
+                if sparkle.life <= 0:
+                    self.sparkles.remove(sparkle)
+            
 
         # Merch collection
         for merch in self.merchs[:]:
@@ -108,12 +128,15 @@ class Game:
                 self.merchs.remove(merch)
                 self.player.score += 1
                 self.audio.play("ui_confirm")
-                self.spawn_sparkles(merch.rect.centerx, merch.rect.centery, 12)
+                
+                if self.show_particles:
+                    self.spawn_sparkles(merch.rect.centerx, merch.rect.centery, 12)
 
                 if self.player.score >= self.level_data["merch_count"]:
                     self.level += 1
                     if self.level > 1:
                         self.state = "win"
+                        pygame.mixer.music.stop()
                     else:
                         self.spawn_level()
 
@@ -126,9 +149,10 @@ class Game:
 
                 if self.player.hp <= 0:
                     self.state = "gameover"
+                    pygame.mixer.music.stop()
 
     def draw(self):
-        screen.fill(GRAY)
+        screen.blit(bg_img, (0, 0))
 
         draw_hud(screen, self.player)
         draw_world(screen, self.level)
@@ -139,25 +163,52 @@ class Game:
         for hz in self.hazards:
             hz.draw(screen)
 
-        for sparkle in self.sparkles:
-            sparkle.draw(screen)
+        if self.show_particles:
+            for sparkle in self.sparkles:
+                sparkle.draw(screen)
 
-        self.player.draw(screen)
+        self.player.draw(screen, self.show_flashing)
 
         if self.state == "title":
-            t = FONT.render("Press SPACE to Start, Press Q to Quit", True, WHITE)
-            r = t.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-            screen.blit(t, r)
+            draw_text_with_outline(
+                screen,
+                "Press SPACE to Start, Press Q to Quit",
+                FONT,
+                WHITE,
+                (0, 0, 0),
+                (WIDTH // 2, HEIGHT // 2)
+            )
 
         if self.state == "gameover":
-            t = FONT.render("Game Over - Press SPACE", True, WHITE)
-            r = t.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-            screen.blit(t, r)
+            draw_text_with_outline(
+                screen,
+                "Game Over - Press SPACE to restart",
+                FONT,
+                WHITE,
+                (0, 0, 0),
+                (WIDTH // 2, HEIGHT // 2)
+            )
 
         if self.state == "paused":
             draw_pause(screen)
 
         if self.state == "win":
-            t = FONT.render("You Win", True, WHITE)
-            r = t.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-            screen.blit(t, r)
+            draw_text_with_outline(
+                screen,
+                "You Win, Press Q to Quit or SPACE to restart",
+                FONT,
+                WHITE,
+                (0, 0, 0),
+                (WIDTH // 2, HEIGHT // 2)
+            )
+    def toggle_audio(self):
+        self.audio_enabled = not self.audio_enabled
+
+        # mute/unmute SFX system
+        self.audio.set_mute(not self.audio_enabled)
+
+        # control music system
+        if self.audio_enabled:
+            pygame.mixer.music.set_volume(0.4)
+        else:
+            pygame.mixer.music.set_volume(0)
