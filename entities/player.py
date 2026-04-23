@@ -62,10 +62,10 @@ class Player:
         self.rect.top = max(HUD_HEIGHT, self.rect.top)
         self.rect.bottom = min(HEIGHT, self.rect.bottom)
 
-    def draw(self, screen):
+    def draw(self, screen, show_flashing=True):
         color = USER_COLOR
 
-        if self.is_invincible:
+        if self.is_invincible and show_flashing:
             blink_on = (pygame.time.get_ticks() // 100) % 2 == 0
             if blink_on:
                 color = RED
