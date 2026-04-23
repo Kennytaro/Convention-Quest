@@ -27,8 +27,8 @@ USER_COLOR = (40,40,200)
 MERCH_COLOR = (240, 200, 100)
 #Red
 HAZARD_COLOR = (200, 80, 80)
-#Dark Gray
-HUD = (30, 30, 40)
+#Ligth BLue
+HUD = (30, 150, 200)
 #Tint, darker black tint kinda
 OVERLAY = (0, 0, 0, 140)
 PLAYER_SPEED = 300
