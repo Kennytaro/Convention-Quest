@@ -10,9 +10,9 @@ class AudioBank:
         self.enabled = False
         self.muted = False
 
-        self.music_volume = 0.4
-        self.sfx_volume = 1.0
-        self.ui_volume = 1.0
+        self.music_volume = 1.0
+        self.sfx_volume = 0.3
+        self.ui_volume = 0.3
 
         self._sounds: dict[str, pygame.mixer.Sound] = {}
         self._loop_channel: pygame.mixer.Channel | None = None
@@ -35,18 +35,26 @@ class AudioBank:
             print("Mixer error:", e)
             self.enabled = False
 
+    def set_mute(self, value: bool):
+        self.muted = value
+        self._apply_volumes()
+
+    def start_music(self):
+        pygame.mixer.music.load("assets/323Beat.wav")
+        pygame.mixer.music.set_volume(1.0)
+        pygame.mixer.music.play(-1)      
+
     def _build_sounds(self) -> None:
         self._sounds = {
             "start": self._make_tone(600.0, 180, 1.0, wave="sine"),
-            "ui_confirm": self._make_tone(900.0, 180, 1.0, wave="square"),
+            "ui_confirm": self._make_tone(900.0, 180, 0.3, wave="square"),
             "ui_cancel": self._make_tone(250.0, 180, 1.0, wave="saw"),
             "fire": self._make_tone(880.0, 120, 1.0, wave="square"),
             "hit": self._make_tone(500.0, 220, 1.0, wave="triangle"),
-            "hurt": self._make_tone(140.0, 320, 1.0, wave="square"),
+            "hurt": self._make_tone(140.0, 320, 0.3, wave="square"),
             "warn": self._make_tone(330.0, 200, 1.0, wave="square"),
             "gameover": self._make_tone(160.0, 500, 1.0, wave="sine"),
             "title_loop": self._make_tone(196.0, 700, 0.5, wave="sine"),
-            "play_loop": self._make_tone(246.94, 480, 0.45, wave="triangle"),
         }
 
     def _make_tone(self, frequency: float, duration_ms: int,
@@ -133,10 +141,8 @@ class AudioBank:
             return
 
         sound.play()
+        return
 
-    def play_loop(self, name: str) -> None:
-        if not self.enabled or self._loop_channel is None:
-            return
 
         sound = self._sounds.get(name)
         if sound is None:
